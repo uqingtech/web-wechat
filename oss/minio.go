@@ -2,10 +2,12 @@ package oss
 
 import (
 	"context"
+	"io"
+
 	"gitee.ltd/lxh/logger/log"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"io"
+
 	"web-wechat/core"
 )
 
@@ -22,14 +24,14 @@ func InitOssConnHandle() {
 	if err != nil {
 		log.Panicf("OSS初始化失败: %v", err.Error())
 	}
-	log.Info("OSS连接成功，开始判断桶是否存在")
-	// 判断捅是否存在，不存在就创建
+	log.Info("OSS连接成功, 开始判断桶是否存在")
+	// 判断捅是否存在, 不存在就创建
 	exists, err := client.BucketExists(ctx, core.SystemConfig.OssConfig.BucketName)
 	if err != nil {
 		log.Panicf("判断桶失败: %v", err)
 	}
 	if !exists {
-		log.Info("桶不存在，开始创建")
+		log.Info("桶不存在, 开始创建")
 		// 创建桶
 		err = client.MakeBucket(ctx, core.SystemConfig.OssConfig.BucketName, minio.MakeBucketOptions{Region: "us-east-1"})
 		if err != nil {

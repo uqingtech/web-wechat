@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
 	"strings"
 	"web-wechat/core"
 	"web-wechat/global"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CheckAppKeyIsLoggedInMiddleware 检查AppKey是否已登录微信
@@ -12,7 +13,7 @@ func CheckAppKeyIsLoggedInMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		appKey := ctx.Request.Header.Get("AppKey")
 		// TODO 从数据库判断AppKey是否存在
-		// 如果不是登录请求，判断AppKey是否有效
+		// 如果不是登录请求, 判断AppKey是否有效
 		flag := true
 		if !strings.Contains(ctx.Request.RequestURI, "login") {
 			if err := global.CheckBot(appKey); err != nil {

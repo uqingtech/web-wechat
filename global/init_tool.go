@@ -1,10 +1,11 @@
 package global
 
 import (
-	"gitee.ltd/lxh/logger/log"
-	"github.com/eatmoreapple/openwechat"
 	. "web-wechat/db"
 	"web-wechat/protocol"
+
+	"gitee.ltd/lxh/logger/log"
+	"github.com/eatmoreapple/openwechat"
 )
 
 // InitBotWithStart 系统启动的时候从Redis加载登录信息自动登录
@@ -23,16 +24,16 @@ func InitBotWithStart() {
 		bot := InitWechatBotHandle()
 		storage := protocol.NewRedisHotReloadStorage(key)
 		if err = bot.HotLogin(storage, openwechat.NewRetryLoginOption()); err != nil {
-			log.Infof("[%v] 热登录失败，错误信息：%v", appKey, err.Error())
-			// 登录失败，删除热登录数据
+			log.Infof("[%v] 热登录失败, 错误信息：%v", appKey, err.Error())
+			// 登录失败, 删除热登录数据
 			if err = RedisClient.Del(key); err != nil {
-				log.Errorf("[%v] Redis缓存删除失败，错误信息：%v", key, err.Error())
+				log.Errorf("[%v] Redis缓存删除失败, 错误信息：%v", key, err.Error())
 			}
 			continue
 		}
 		loginUser, _ := bot.GetCurrentUser()
-		log.Infof("[%v]初始化自动登录成功，用户名：%v", appKey, loginUser.NickName)
-		// 登录成功，写入到WechatBots
+		log.Infof("[%v]初始化自动登录成功, 用户名：%v", appKey, loginUser.NickName)
+		// 登录成功, 写入到WechatBots
 		SetBot(appKey, bot)
 	}
 }

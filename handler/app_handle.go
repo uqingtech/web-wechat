@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"gitee.ltd/lxh/logger/log"
-	"github.com/eatmoreapple/openwechat"
 	"io"
 	"net/http"
 	"web-wechat/core"
 	"web-wechat/oss"
+
+	"gitee.ltd/lxh/logger/log"
+	"github.com/eatmoreapple/openwechat"
 )
 
 type AppMessageData struct {
@@ -86,7 +87,7 @@ func appMessageHandle(ctx *openwechat.MessageContext) {
 		tt := data.Appmsg.Type
 		dealType := []string{"2", "3", "4", "6", "15"}
 		if !checkIsExist(dealType, tt) {
-			log.Infof("奇奇怪怪的未定义处理类型，跳过处理。类型: %v", tt)
+			log.Infof("奇奇怪怪的未定义处理类型, 跳过处理。类型: %v", tt)
 			return
 		}
 		// 下载图片资源
@@ -113,7 +114,7 @@ func appMessageHandle(ctx *openwechat.MessageContext) {
 			flag := oss.SaveToOss(reader2, contentType, fileName)
 			if flag {
 				fileUrl := fmt.Sprintf("https://%v/%v/%v", core.SystemConfig.OssConfig.Endpoint, core.SystemConfig.OssConfig.BucketName, fileName)
-				log.Infof("文件保存成功，文件链接: %v", fileUrl)
+				log.Infof("文件保存成功, 文件链接: %v", fileUrl)
 				ctx.Content = fileUrl
 			} else {
 				log.Error("文件保存失败")

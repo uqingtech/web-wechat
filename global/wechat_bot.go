@@ -2,9 +2,10 @@ package global
 
 import (
 	"errors"
+	"web-wechat/handler"
+
 	"gitee.ltd/lxh/logger/log"
 	"github.com/eatmoreapple/openwechat"
-	"web-wechat/handler"
 )
 
 // InitWechatBotsMap 初始化WechatBots
@@ -31,7 +32,7 @@ func CheckBot(appKey string) error {
 	}
 	// 判断在线状态是否正常
 	if !bot.Alive() {
-		return errors.New("微信在线状态异常，请重新登录")
+		return errors.New("微信在线状态异常, 请重新登录")
 	}
 	return nil
 }
@@ -46,7 +47,7 @@ func InitWechatBotHandle() *openwechat.Bot {
 	//	atomic.AddInt32(&getMessageErrorCount, 1)
 	//	// 如果发生了三次错误,那么直接退出
 	//	if getMessageErrorCount == 3 {
-	//		log.Errorf("获取消息发生错误达到三次，直接退出。错误信息：%v", err.Error())
+	//		log.Errorf("获取消息发生错误达到三次, 直接退出。错误信息：%v", err.Error())
 	//		_ = bot.Logout()
 	//	}
 	//}

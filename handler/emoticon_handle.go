@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"gitee.ltd/lxh/logger/log"
-	"github.com/eatmoreapple/openwechat"
 	"io"
 	"net/http"
 	"strings"
 	"web-wechat/core"
 	"web-wechat/oss"
+
+	"gitee.ltd/lxh/logger/log"
+	"github.com/eatmoreapple/openwechat"
 )
 
 // EmoticonMessageData 表情包消息结构体
@@ -64,10 +65,10 @@ func emoticonMessageHandle(ctx *openwechat.MessageContext) {
 		senderUser = fmt.Sprintf("%v[%v]", senderInGroup.NickName, senderUser)
 	}
 
-	// 判断消息是不是表情商店的，如果是，不支持解析
+	// 判断消息是不是表情商店的, 如果是, 不支持解析
 	if !strings.Contains(ctx.Content, "<msg>") {
 		log.Debugf("原始数据: %v", ctx.Content)
-		log.Infof("[收到新表情包消息] == 发信人：%v ==> 内容：「收到了一个表情，请在手机上查看」", senderUser)
+		log.Infof("[收到新表情包消息] == 发信人：%v ==> 内容：「收到了一个表情, 请在手机上查看」", senderUser)
 	} else {
 		// 解析表情包
 		var data EmoticonMessageData
@@ -102,7 +103,7 @@ func emoticonMessageHandle(ctx *openwechat.MessageContext) {
 				flag := oss.SaveToOss(reader2, contentType, fileName)
 				if flag {
 					fileUrl := fmt.Sprintf("https://%v/%v/%v", core.SystemConfig.OssConfig.Endpoint, core.SystemConfig.OssConfig.BucketName, fileName)
-					log.Infof("表情包保存成功，图片链接: %v", fileUrl)
+					log.Infof("表情包保存成功, 图片链接: %v", fileUrl)
 					ctx.Content = fileUrl
 				} else {
 					log.Error("表情包保存失败")

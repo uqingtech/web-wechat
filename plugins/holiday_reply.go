@@ -2,9 +2,10 @@ package plugins
 
 import (
 	"fmt"
+	"web-wechat/utils"
+
 	"gitee.ltd/lxh/logger/log"
 	"github.com/eatmoreapple/openwechat"
-	"web-wechat/utils"
 )
 
 // checkHoliday
@@ -17,10 +18,10 @@ func (weChatPlugin) checkHoliday(ctx *openwechat.MessageContext) {
 	d, t := utils.OffDuty().GetNextHolidayOrWeekend()
 	replyStr := fmt.Sprintf("距离%v还有%v天", d, t)
 	if t == 0 {
-		replyStr = fmt.Sprintf("今天已经是%v了啊，不会你还没放假吧？", d)
+		replyStr = fmt.Sprintf("今天已经是%v了啊, 不会你还没放假吧？", d)
 	}
 	if t > 0 && t < 3 {
-		replyStr = fmt.Sprintf("%v就是%v啦，再坚持一下咯~", dd[t], d)
+		replyStr = fmt.Sprintf("%v就是%v啦, 再坚持一下咯~", dd[t], d)
 	}
 	if _, err := ctx.ReplyText(replyStr); err != nil {
 		log.Errorf("[放假倒计时]消息回复失败: %v", err.Error())
@@ -41,10 +42,10 @@ func (weChatPlugin) checkFestivals(ctx *openwechat.MessageContext) {
 		replyStr = "今年的节日好像已经过完了咯~"
 	}
 	if t == 0 {
-		replyStr = fmt.Sprintf("今天已经是%v了啊，不会你还没放假吧？", d)
+		replyStr = fmt.Sprintf("今天已经是%v了啊, 不会你还没放假吧？", d)
 	}
 	if t > 0 && t < 3 {
-		replyStr = fmt.Sprintf("%v就是%v啦，再坚持一下咯~", dd[t], d)
+		replyStr = fmt.Sprintf("%v就是%v啦, 再坚持一下咯~", dd[t], d)
 	}
 	if _, err := ctx.ReplyText(replyStr); err != nil {
 		log.Errorf("[过节倒计时]消息回复失败: %v", err.Error())

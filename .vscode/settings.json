@@ -1,0 +1,5 @@
+{
+    "go.toolsEnvVars": { "GOPROXY": "https://goproxy.io" },
+    "go.goroot": "/home/teaser/.gvm/gos/go1.21.11"
+
+}

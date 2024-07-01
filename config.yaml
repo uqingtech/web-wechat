@@ -1,8 +1,8 @@
 # Redis配置
 redis:
-  host: 10.11.0.19
+  host: 127.0.0.1
   port: 6379
-  password: pGhQKwj7DE7FbFL1
+  password: 
   db: 15
 
 # MySQL配置
@@ -15,22 +15,22 @@ mysql:
 
 # MongoDB配置
 mongodb:
-  host: 10.11.0.10
+  host: 127.0.0.1
   port: 27017
-  username: lxh
-  password: admin123
+  username: root
+  password: localtest
   database: web-wechat
 
 # OSS配置
 oss:
-  endpoint: oss.lxh.io
-  accessKeyId: lxh
-  accessKeySecret: lixunhuan
-  bucket: web-wechat
-  ssl: true
+  endpoint: 127.0.0.1:9000
+  accessKeyId: teaser
+  accessKeySecret: localtest
+  bucket: wechat
+  ssl: false
 
 # ChatGPT配置
 openai:
-  enable: true
+  enable: false
   apikey: xxxx # 在 https://beta.openai.com/account/api-keys 申请
   proxy: http://127.0.0.1:7890 # 代理

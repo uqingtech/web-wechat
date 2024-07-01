@@ -2,12 +2,13 @@ package plugins
 
 import (
 	"fmt"
-	"gitee.ltd/lxh/logger/log"
-	"github.com/eatmoreapple/openwechat"
-	"github.com/golang-module/carbon/v2"
 	"time"
 	"web-wechat/resource"
 	"web-wechat/utils"
+
+	"gitee.ltd/lxh/logger/log"
+	"github.com/eatmoreapple/openwechat"
+	"github.com/golang-module/carbon/v2"
 )
 
 // checkOffWork
@@ -15,16 +16,16 @@ import (
 // @receiver weChatPlugin
 // @param ctx
 func (weChatPlugin) checkOffWork(ctx *openwechat.MessageContext) {
-	// 如果不是工作日，跳过处理
+	// 如果不是工作日, 跳过处理
 	if isHoliday, h := utils.OffDuty().CheckIsHoliday(time.Now()); isHoliday {
-		if _, err := ctx.ReplyText(fmt.Sprintf("不会吧不会吧，不会有人%v还在上班吧", h)); err != nil {
+		if _, err := ctx.ReplyText(fmt.Sprintf("不会吧不会吧, 不会有人%v还在上班吧", h)); err != nil {
 			log.Errorf("阴阳怪气失败: %v", err.Error())
 		}
 		return
 	}
 	// 非工作时间不执行
 	if time.Now().Hour() < 9 || time.Now().Hour() >= 18 {
-		if _, err := ctx.ReplyText("不会吧不会吧，不会有人这个点还没下班吧"); err != nil {
+		if _, err := ctx.ReplyText("不会吧不会吧, 不会有人这个点还没下班吧"); err != nil {
 			log.Errorf("阴阳怪气失败: %v", err.Error())
 		}
 		return

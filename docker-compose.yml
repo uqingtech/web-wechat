@@ -1,14 +1,45 @@
 version: '3'
 services:
   redis:
-    image: redis
+    image: public.ecr.aws/bitnami/redis:7.2.5-debian-12-r1
     restart: always
     container_name: wechat_redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - redis:/bitnami/redis/data
     ports:
-      - 16379:6379
-  api:
-    image: registry.cn-hangzhou.aliyuncs.com/lixh/web-wechat
+      - 6379:6379
+  mongo:
+    image: dockerhub.icu/bitnami/mongodb:7.0.12-debian-12-r0
     restart: always
-    container_name: wechat_api
+    container_name: wechat_mongo
+    environment:
+      - MONGODB_DATABASE=web-wechat
+      - MONGODB_ROOT_PASSWORD=localtest
+    volumes:
+      - mongo:/bitnami/mongodb/data
     ports:
-      - 18888:8888
+      - 27017:27017
+  minio:
+    image: dockerhub.icu/bitnami/minio:2024.6.28-debian-12-r0
+    restart: always
+    container_name: wechat_minio
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    volumes:
+      - minio:/bitnami/minio/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+volumes:
+  minio:
+  mongo:
+  redis: 
+  # api:
+  #   image: registry.cn-hangzhou.aliyuncs.com/lixh/web-wechat
+  #   restart: always
+  #   container_name: wechat_api
+  #   ports:
+  #     - 18888:8888

@@ -1,11 +1,13 @@
 package main
 
 import (
+	"os"
+
 	"gitee.ltd/lxh/logger"
 	"gitee.ltd/lxh/logger/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"os"
+
 	"web-wechat/core"
 	"web-wechat/db"
 	"web-wechat/global"
@@ -23,7 +25,7 @@ func init() {
 	vp := viper.New()
 	// 初始化配置
 	if os.Getenv("RUN_MODE") == "dev" {
-		vp.AddConfigPath("E:/Lxh/web-wechat") // 设置配置文件路径
+		vp.AddConfigPath("/home/teaser/source_dir/web-wechat") // 设置配置文件路径
 	} else {
 		vp.AddConfigPath(".") // 设置配置文件路径
 	}

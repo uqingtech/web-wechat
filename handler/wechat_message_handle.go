@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/eatmoreapple/openwechat"
+
 	"web-wechat/plugins"
 )
 
@@ -30,6 +31,7 @@ func HandleMessage(bot *openwechat.Bot) {
 	dispatcher.OnEmoticon(emoticonMessageHandle)
 	// 注册视频消息处理器
 	dispatcher.OnVideo(videoMessageHandle)
+	dispatcher.OnVoice(voiceMessageHandle)
 	// APP消息处理
 	dispatcher.OnMedia(appMessageHandle)
 	// 保存消息

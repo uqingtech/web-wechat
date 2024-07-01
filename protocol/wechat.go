@@ -2,9 +2,10 @@ package protocol
 
 import (
 	"bytes"
-	"gitee.ltd/lxh/logger/log"
 	"time"
 	. "web-wechat/db"
+
+	"gitee.ltd/lxh/logger/log"
 )
 
 type RedisHotReloadStorage struct {
@@ -16,7 +17,7 @@ func NewRedisHotReloadStorage(key string) *RedisHotReloadStorage {
 	return &RedisHotReloadStorage{Key: key}
 }
 
-// Load 重写热登录数据加载，从Redis取数据
+// Load 重写热登录数据加载, 从Redis取数据
 func (f *RedisHotReloadStorage) Read(p []byte) (n int, err error) {
 	if f.reader == nil {
 		// 从Redis获取热登录数据
@@ -30,7 +31,7 @@ func (f *RedisHotReloadStorage) Read(p []byte) (n int, err error) {
 	return f.reader.Read(p)
 }
 
-// Dump 重写更新热登录数据，保存到Redis
+// Dump 重写更新热登录数据, 保存到Redis
 func (f *RedisHotReloadStorage) Write(p []byte) (n int, err error) {
 	err = RedisClient.SetWithTimeout(f.Key, string(p), 2*24*time.Hour)
 	if err != nil {

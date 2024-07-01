@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"gitee.ltd/lxh/logger/log"
-	"github.com/eatmoreapple/openwechat"
 	"io"
 	"net/http"
 	"strings"
 	"web-wechat/core"
 	"web-wechat/oss"
+
+	"gitee.ltd/lxh/logger/log"
+	"github.com/eatmoreapple/openwechat"
 )
 
 // ImageMessageData 图片消息结构体
@@ -49,7 +50,7 @@ func imageMessageHandle(ctx *openwechat.MessageContext) {
 	// 解析xml为结构体
 	var data ImageMessageData
 	if strings.HasPrefix(ctx.Content, "@") && !strings.Contains(ctx.Content, " ") {
-		log.Debug("消息内容为图片资源ID，不解析为结构体")
+		log.Debug("消息内容为图片资源ID, 不解析为结构体")
 	} else if err := xml.Unmarshal([]byte(ctx.Content), &data); err != nil {
 		log.Errorf("消息解析失败: %v", err.Error())
 		log.Debugf("发信人: %v ==> 原始内容: %v", senderUser, ctx.Content)
@@ -83,7 +84,7 @@ func imageMessageHandle(ctx *openwechat.MessageContext) {
 		flag := oss.SaveToOss(reader2, contentType, fileName)
 		if flag {
 			fileUrl := fmt.Sprintf("https://%v/%v/%v", core.SystemConfig.OssConfig.Endpoint, core.SystemConfig.OssConfig.BucketName, fileName)
-			log.Infof("图片保存成功，图片链接: %v", fileUrl)
+			log.Infof("图片保存成功, 图片链接: %v", fileUrl)
 			ctx.Content = fileUrl
 		} else {
 			log.Error("图片保存失败")

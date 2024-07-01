@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
-	"gitee.ltd/lxh/logger/log"
-	"github.com/eatmoreapple/openwechat"
 	"io"
 	"net/http"
 	"strings"
+
+	"gitee.ltd/lxh/logger/log"
+	"github.com/eatmoreapple/openwechat"
+
 	"web-wechat/core"
 	"web-wechat/oss"
 )
@@ -48,13 +50,18 @@ func videoMessageHandle(ctx *openwechat.MessageContext) {
 		senderUser = fmt.Sprintf("%v[%v]", senderInGroup.NickName, senderUser)
 	}
 	// 解析xml为结构体
-	var data VideoMessageData
-	if err := xml.Unmarshal([]byte(ctx.Content), &data); err != nil {
-		log.Errorf("消息解析失败: %v", err.Error())
-		log.Debugf("发信人: %v ==> 原始内容: %v", senderUser, ctx.Content)
-		return
+	if strings.HasPrefix(ctx.Content, "@") && !strings.Contains(ctx.Content, " ") {
+		log.Debug("消息内容为图片资源ID, 不解析为结构体")
+	} else {
+		var data VideoMessageData
+		if err := xml.Unmarshal([]byte(ctx.Content), &data); err != nil {
+			log.Errorf("消息解析失败: %v", err.Error())
+			log.Debugf("发信人: %v ==> 原始内容: %v", senderUser, ctx.Content)
+			return
+		}
+		log.Infof("[收到新视频消息] == 发信人：%v", senderUser)
 	}
-	log.Infof("[收到新视频消息] == 发信人：%v", senderUser)
+
 	fileResp, err := ctx.GetVideo()
 	if err != nil {
 		log.Errorf("视频下载失败: %v", err.Error())
@@ -80,7 +87,7 @@ func videoMessageHandle(ctx *openwechat.MessageContext) {
 		flag := oss.SaveToOss(reader2, contentType, fileName)
 		if flag {
 			fileUrl := fmt.Sprintf("https://%v/%v/%v", core.SystemConfig.OssConfig.Endpoint, core.SystemConfig.OssConfig.BucketName, fileName)
-			log.Infof("视频保存成功，视频链接: %v", fileUrl)
+			log.Infof("视频保存成功, 视频链接: %v", fileUrl)
 			ctx.Content = fileUrl
 		} else {
 			log.Error("视频保存失败")

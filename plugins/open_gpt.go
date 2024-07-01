@@ -2,14 +2,15 @@ package plugins
 
 import (
 	"context"
-	"gitee.ltd/lxh/logger/log"
-	"github.com/PullRequestInc/go-gpt3"
-	"github.com/eatmoreapple/openwechat"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 	"web-wechat/core"
+
+	"gitee.ltd/lxh/logger/log"
+	"github.com/PullRequestInc/go-gpt3"
+	"github.com/eatmoreapple/openwechat"
 )
 
 // OpenGPT
@@ -44,7 +45,7 @@ func (weChatPlugin) OpenGPT(ctx *openwechat.MessageContext) {
 	log.Debugf("ChatGPT提问内容: %s", question)
 
 	// 调用GPT-3聊天机器人
-	// 如果配置了代理，就设置一下
+	// 如果配置了代理, 就设置一下
 	hc := http.Client{Timeout: 30 * time.Second}
 	if conf.Proxy != "" {
 		hc.Transport = &http.Transport{
@@ -57,7 +58,7 @@ func (weChatPlugin) OpenGPT(ctx *openwechat.MessageContext) {
 	// 创建OpenAI客户端
 	client := gpt3.NewClient(conf.ApiKey, gpt3.WithHTTPClient(&hc))
 
-	// 组装消息 TODO 懒得搞上下文联动，有想法的可以自己实现，只需要组装一下下面这个Message字段就行了，把之前的记录带过去
+	// 组装消息 TODO 懒得搞上下文联动, 有想法的可以自己实现, 只需要组装一下下面这个Message字段就行了, 把之前的记录带过去
 	request := gpt3.ChatCompletionRequest{
 		Model:    gpt3.GPT3Dot5Turbo0301,
 		Messages: []gpt3.ChatCompletionRequestMessage{{Role: "user", Content: question}},
