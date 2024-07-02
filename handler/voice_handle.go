@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 
 	"gitee.ltd/lxh/logger/log"
 	"github.com/eatmoreapple/openwechat"
@@ -31,17 +30,18 @@ func voiceMessageHandle(ctx *openwechat.MessageContext) {
 	defer fileResp.Body.Close()
 	voiceByte, err := io.ReadAll(fileResp.Body)
 	if err != nil {
-		log.Errorf("图片读取错误: %v", err.Error())
+		log.Errorf("voice读取错误: %v", err.Error())
 		return
 	} else {
 		// 读取文件相关信息
 		contentType := http.DetectContentType(voiceByte)
-		fileType := strings.Split(contentType, "/")[1]
-		fileName := fmt.Sprintf("%v.%v", ctx.MsgId, fileType)
+		// fileType := strings.Split(contentType, "/")[1]
+		fileName := fmt.Sprintf("%v.%v", ctx.MsgId, "mp3")
 		if user, err := ctx.Bot().GetCurrentUser(); err == nil {
 			uin := user.Uin
 			fileName = fmt.Sprintf("%v/%v", uin, fileName)
 		}
+		log.Infof("[收到新voice消息] == 发信人：%v", senderUser)
 
 		// 上传文件
 		reader2 := io.NopCloser(bytes.NewReader(voiceByte))
